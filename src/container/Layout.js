@@ -1,31 +1,9 @@
 import React, {Component} from 'react';
 import Button from './../components/Button/Button';
+import {connect} from 'react-redux';
 
-class Layout extends Component {
-    constructor(props){
-        super(props)
 
-        this.state = {
-            currantCount: 0,
-            disabledInc: false,
-            disabledDec: false
-        }
-    }
-
-    
-
-    increment = ()=>{
-       this.setState((prevState)=>({
-        currantCount: prevState.currantCount + 1
-       }))
-    }
-    decrement = ()=>{
-        this.setState((prevState)=>({
-            currantCount: prevState.currantCount - 1
-        }))
-    }
-  
-    render(){
+const layout  = (props)=> {
         return(
             <> 
             <div style={
@@ -33,13 +11,25 @@ class Layout extends Component {
                     marginTop:'50px'
                 }
             }>
-                Number is : {this.state.currantCount}
+                Number is : {props.currantCount}
             </div>
-            <Button click={this.increment} isDisabled={this.state.disabledInc}>Increment</Button>
-            <Button click={this.decrement} isDisabled={this.state.disabledDec}>Decrement</Button>
+            <Button click={props.increment}>Increment</Button>
+            <Button click={props.decrement}>Decrement</Button>
             </>
         )
-    }
 }
 
-export default Layout;
+const mapStateToProps = (state) => {
+    return {
+        currantCount: state.currantCount
+    };
+  };
+
+  const mapDispatchToProps = (dispatch) => {
+    return {
+        increment: () => { dispatch({type:'INCREMENT', payload: {}})},
+        decrement: () => { dispatch({type:'DECREMENT', payload:{}})}
+    };
+  };
+
+export default connect(mapStateToProps,mapDispatchToProps, null)(layout);
